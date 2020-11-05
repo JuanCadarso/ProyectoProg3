@@ -1,0 +1,9 @@
+CREATE TABLE cuenta 
+	(IBAN varchar(255) NOT NULL,
+	 dni varchar(255) NOT NULL, 
+	 nombre varchar(255) NOT NULL, 
+	 apellido1 varchar(255) NOT NULL,
+	 apellido2 varchar(255) NOT NULL,
+	 saldo float NOT NULL,
+	 PRIMARY KEY (IBAN));
+	 

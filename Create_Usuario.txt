@@ -1,0 +1,9 @@
+CREATE TABLE usuario 
+	(dni varchar(255) NOT NULL,
+	 nombre varchar(255) NOT NULL, 
+	 apellido1 varchar(255) NOT NULL,
+	 apellido2 varchar(255) NOT NULL,
+	 email varchar(100) NOT NULL,
+	 password varchar(100) NOT NULL, 
+	 PRIMARY KEY (dni));
+	 

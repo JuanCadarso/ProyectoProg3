@@ -1,0 +1,25 @@
+INSERT INTO usuario VALUES  
+	('11111111H', 
+	 'Juan',
+	 'Cadarso',
+	 'Infanzon',
+	 'juanCadarso@hotmail.com',
+	 '5A3736DD60FCFB396582012C82EAFB7D');
+
+INSERT INTO usuario VALUES  
+	('16027536K', 
+	 'Pedro',
+	 'Ruiz',
+	 'Garcia',
+	 'pedroRuiz@hotmail.com',
+	 '87FDA93AB58D7443A9355F298CE7C696');
+
+INSERT INTO usuario VALUES  
+	('16783456T', 
+	 'Maria',
+	 'Arana',
+	 'Garcia',
+	 'mariaArana@hotmail.com',
+	 '4F56835FBE7F8E3C0A920B1D45AE0105');
+
+	 

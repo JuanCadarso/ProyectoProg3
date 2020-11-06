@@ -44,6 +44,7 @@ import java.awt.GridLayout;
 
 public class AppBanco extends JFrame implements ActionListener {
 	
+	//Logger para la clase AppBAnco
 	private final static Logger LOGGER = Logger.getLogger("AppBanco.AppBanco");
 
 	private static final long serialVersionUID = 1L;
@@ -56,14 +57,13 @@ public class AppBanco extends JFrame implements ActionListener {
 	private Cuenta cuenta;
 
 	/**
-	 * Create the frame.
+	 * Creación de la pantalla de AppBAnco
 	 */
 	public AppBanco(Usuario user) {
 		this.usuario = user;
 		
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		setBounds(100, 100, 527, 375);
 		this.setTitle("Usuario: "+user.getNombre()+" "+user.getApellido1()+" "+user.getApellido2());
@@ -144,6 +144,10 @@ public class AppBanco extends JFrame implements ActionListener {
 
 	}
 	
+	/**
+	 * Regula la cuenta que se muestra en cada momento, según la cuenta
+	 * seleccionada en el comboBox de cuentas de la parte superior de la ventana.
+	 */
 	private void cambioCuenta() {
 		Cuenta cuen = (Cuenta) comboBox.getSelectedItem();
 		
@@ -156,6 +160,9 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * Método ppara retorna a la pantalla de login
+	 */
 	private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();

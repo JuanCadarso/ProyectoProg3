@@ -62,7 +62,7 @@ public class Login extends JFrame implements ActionListener {
 	private JPasswordField passwordField;
 
 	/**
-	 * Create the frame.
+	 * Creación de la pantalla de login
 	 */
 	public Login() {
 		setFont(new Font("Dialog", Font.BOLD, 12));
@@ -131,7 +131,10 @@ public class Login extends JFrame implements ActionListener {
     	AltaUsuario m = new AltaUsuario();
     }
 	
-	//Método del botón Aceptar
+	/**
+	 * Método encargado de dar acceso al usuario a la app. Le da la funcionalidad
+	 * al botón aceptar.
+	 */
     private void acceder() {
         String dni = this.textField.getText().toUpperCase().trim(); //Campo del DNI
         this.textField.setText(dni);
@@ -192,6 +195,11 @@ public class Login extends JFrame implements ActionListener {
 
     }
 
+    /**
+     * Carga las cuyenta del usuario
+     * @param user
+     * @return
+     */
     private Usuario cargarCuentasUsuario(Usuario user) {
     	Usuario usuar = user;
     	
@@ -234,6 +242,7 @@ public class Login extends JFrame implements ActionListener {
 			LOGGER.log(Level.SEVERE, "Error de IO: "+e1.getMessage());
 		}
 
+		//Carga de la pantalla de login así como del Look and Feel
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

@@ -35,6 +35,7 @@ import javax.swing.JPasswordField;
 
 public class AltaUsuario extends JFrame implements ActionListener {
 
+	//Logger para la clase alta usuario
 	private final static Logger LOGGER = Logger.getLogger("AppBanco.AltaUsuario");
 	
 	private static final long serialVersionUID = 1L;
@@ -50,7 +51,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 	private Usuario usuario;
 	
 	/**
-	 * Create the frame.
+	 * Creacion de la pantalla de AltaUsuario
 	 */
 	public AltaUsuario() {
 		setFont(new Font("Dialog", Font.BOLD, 12));
@@ -258,6 +259,14 @@ public class AltaUsuario extends JFrame implements ActionListener {
 
 	}
 	
+	/**
+	 * Méetpdp validar() para la validacion de los atributos de un nuevo usuario (si alguno de los
+	 * atributos no se puede validar lo avisa mediante un dialogo, para la validación como tal
+	 * se apoya en métodos implementados al final de esta misma clase). También
+	 * comprueba que el nuevo usuario no exista ya previamente. Si el nuevo usuario ya existe
+	 * se deniega. Si no existe previamente se crea uno nuevo
+	 * @return boolean
+	 */
     public boolean validar() {
     	textNombre.setText(textNombre.getText().trim());
     	String nombre = textNombre.getText();
@@ -425,6 +434,10 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	
     }
 
+    /**
+     * Insercion de un nuevo usuario
+     * @return
+     */
     public boolean insertarUsuario() {
 		// Se da de alta el nuevo usuario
     	UsuarioBD us = new UsuarioBD();
@@ -449,11 +462,14 @@ public class AltaUsuario extends JFrame implements ActionListener {
         return true;
     }
     
-    // Metodo para validar un DNI    
+    /**
+     * Metodo para validar el dni a través de expresiones regulares  
+     * @param dni
+     * @return
+     */
     public boolean isDNI(String dni) {
     	Pattern pat = null;
     	Matcher mat = null;
-    	// https://www.discoduroderoer.es/ejercicios-propuestos-y-resueltos-expresiones-regulares-en-java/
     	pat = Pattern.compile("^[0-9]{8}[T|R|W|A|G|M|Y|F|P|D|X|B|N|J|Z|S|Q|V|H|L|C|K|E]$");
     	mat = pat.matcher(dni);
 
@@ -464,11 +480,14 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	}
     }
 
-    // Metodo para validar nombres y apellidos    
+    /** 
+     * Método para validar los nombres y apellidos a través de expresiones regulares
+     * @param nom
+     * @return
+     */
     public boolean isNomApell(String nom) {
     	Pattern pat = null;
     	Matcher mat = null;
-    	// https://www.discoduroderoer.es/ejercicios-propuestos-y-resueltos-expresiones-regulares-en-java/
     	pat = Pattern.compile("^([A-Z]{1}[a-z]+[ ]?){1,2}$");
     	mat = pat.matcher(nom);
 
@@ -479,7 +498,11 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	}
     }
 
-    // Metodo para validar correo electronio    
+    /** 
+     * Método para validar el mail a través de expresiones regulares
+     * @param correo
+     * @return
+     */
     public boolean isEmail(String correo) {
     	Pattern pat = null;
     	Matcher mat = null;
@@ -494,7 +517,11 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	}
     }
 
-    // Metodo para validar password    
+    /**   
+     * Método para validar la contrseña, recorriendo los caracteres de la misma
+     * @param pass
+     * @return
+     */
     public boolean isPassword(String pass) {
     	if (pass == null) {
     		return false;
@@ -533,7 +560,9 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	}
     }
 
-    //Volver a la pantalla de login
+    /**
+     * Vuelve a la pantalla de login
+     */
 	private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();

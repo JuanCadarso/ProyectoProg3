@@ -10,6 +10,13 @@ public class Operacion {
 	String concepto;
 	Date fecha;
 	
+	/**
+	 *  Constructor de la clase Operacion
+	 * @param idOperacion
+	 * @param importe
+	 * @param concepto
+	 * @param fecha
+	 */
 	public Operacion(String idOperacion, float importe, String concepto, Date fecha) {
 		super();
 		this.idOperacion = idOperacion;
@@ -18,6 +25,7 @@ public class Operacion {
 		this.fecha = fecha;
 	}
 
+	//Getters y setters de la clase Operacion
 	public String getIdOperacion() {
 		return idOperacion;
 	}

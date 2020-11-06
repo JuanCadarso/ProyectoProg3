@@ -13,6 +13,9 @@ public class Usuario {
 	String password;
 	List<Cuenta> cuentas;
 	
+	/**
+	 * Constrcutor vacio de la clase Usuario
+	 */
 	public Usuario() {
 		super();
 		this.dni = null;
@@ -24,6 +27,15 @@ public class Usuario {
 		this.cuentas = null;
 	}
 	
+	/**
+	 * Constructor de la clase Usuario
+	 * @param dni
+	 * @param nombre
+	 * @param apellido1
+	 * @param apellido2
+	 * @param email
+	 * @param password
+	 */
 	public Usuario(String dni, String nombre, String apellido1, String apellido2, String email, String password) {
 		super();
 		this.dni = dni;
@@ -35,6 +47,7 @@ public class Usuario {
 		this.cuentas = new ArrayList<Cuenta>();
 	}
 	
+	//Getters y setters clase Usuario
 	public String getDni() {
 		return dni;
 	}

@@ -7,11 +7,20 @@ public class OperaciónCajero extends Operacion {
 
 	String establecimiento;
 
+	/**
+	 *  Constructor de la clase OperacionCajero
+	 * @param idOperacion
+	 * @param importe
+	 * @param concepto
+	 * @param fecha
+	 * @param establecimiento
+	 */
 	public OperaciónCajero(String idOperacion, float importe, String concepto, Date fecha, String establecimiento) {
 		super(idOperacion, importe, concepto, fecha);
 		this.establecimiento = establecimiento;
 	}
 
+	//Getters y setters de la clase OperacionCajero
 	public String getEstablecimiento() {
 		return establecimiento;
 	}

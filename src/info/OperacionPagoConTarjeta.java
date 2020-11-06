@@ -7,6 +7,14 @@ public class OperacionPagoConTarjeta extends Operacion {
 
 	String benificiario;
 
+	/**
+	 *  Constructor de la clase OperacionPagoConTarjeta
+	 * @param idOperacion
+	 * @param importe
+	 * @param concepto
+	 * @param fecha
+	 * @param benificiario
+	 */
 	public OperacionPagoConTarjeta(String idOperacion, float importe, String concepto, Date fecha,
 			String benificiario) {
 		super(idOperacion, importe, "Pago con tarjeta", fecha);

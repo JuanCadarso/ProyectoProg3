@@ -8,6 +8,15 @@ public class OperacionTransferencia extends Operacion {
 	String IBANEmisor;
 	String IBANReceptor;
 
+	/**
+	 *  Constructor de la clase OperacionTransferencia
+	 * @param idOperacion
+	 * @param importe
+	 * @param concepto
+	 * @param fecha
+	 * @param iBANEmisor
+	 * @param iBANReceptor
+	 */
 	public OperacionTransferencia(String idOperacion, float importe, String concepto, Date fecha, String iBANEmisor,
 			String iBANReceptor) {
 		super(idOperacion, importe, concepto, fecha);
@@ -15,6 +24,7 @@ public class OperacionTransferencia extends Operacion {
 		IBANReceptor = iBANReceptor;
 	}
 
+	//Getters y setters de la clase OperacionTransferencia
 	public String getIBANEmisor() {
 		return IBANEmisor;
 	}

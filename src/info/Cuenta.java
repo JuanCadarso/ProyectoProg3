@@ -13,6 +13,15 @@ public class Cuenta {
 	float saldo;
 	TreeMap<Date, Operacion> movimientos;
 	
+	/**
+	 * Constructor de la clas cuenta
+	 * @param iBAN
+	 * @param dni
+	 * @param nombre
+	 * @param apellido1
+	 * @param apellido2
+	 * @param saldo
+	 */
 	public Cuenta(String iBAN, String dni, String nombre, String apellido1, String apellido2, float saldo) {
 		super();
 		IBAN = iBAN;
@@ -24,6 +33,7 @@ public class Cuenta {
 		movimientos = new TreeMap<Date, Operacion>();
 	}
 
+	//Getters y setters de la clase cuenta
 	public String getIBAN() {
 		return IBAN;
 	}

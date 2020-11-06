@@ -2,6 +2,7 @@ package info;
 
 import java.util.Date;
 
+//Clase general de operacion
 public class Operacion {
 
 	String idOperacion;

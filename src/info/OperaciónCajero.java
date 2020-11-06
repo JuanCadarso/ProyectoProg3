@@ -2,6 +2,7 @@ package info;
 
 import java.util.Date;
 
+//Clase de operacion realizada en un cajero, solo añade el establecimiento en el que se encuentra el cajero
 public class OperaciónCajero extends Operacion {
 
 	String establecimiento;

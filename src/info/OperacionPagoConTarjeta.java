@@ -2,6 +2,7 @@ package info;
 
 import java.util.Date;
 
+//Operacion de pago con tarjeta, simplemente añade un beneficiario
 public class OperacionPagoConTarjeta extends Operacion {
 
 	String benificiario;

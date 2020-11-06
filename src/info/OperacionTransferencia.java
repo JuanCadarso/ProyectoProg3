@@ -2,6 +2,7 @@ package info;
 
 import java.util.Date;
 
+//Operacion transmisor en la que se añade un emisor y un receptor
 public class OperacionTransferencia extends Operacion {
 
 	String IBANEmisor;

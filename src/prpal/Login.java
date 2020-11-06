@@ -8,8 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.XMLFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -36,7 +43,18 @@ import seguridad.MD5;
 
 import javax.swing.SwingConstants;
 
+//Clase de la ventana de login
 public class Login extends JFrame implements ActionListener {
+	
+	// El log de nivel superior
+    private final static Logger LOG_RAIZ = Logger.getLogger("AppBanco");
+
+	// El log para ESTA clase en particular
+	private final static Logger LOGGER = Logger.getLogger("AppBanco.Login");
+	// El log para AltaUsuario
+	private final static Logger LOG_ALTAUSUARIO = Logger.getLogger("AppBanco.AltaUsuario");
+	// El log para AppBanco
+	private final static Logger LOG_APPBANCO = Logger.getLogger("AppBanco.AppBanco");
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -47,6 +65,7 @@ public class Login extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Login() {
+		setFont(new Font("Dialog", Font.BOLD, 12));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 376, 177);
@@ -84,7 +103,7 @@ public class Login extends JFrame implements ActionListener {
 		JButton btnNewButton = new JButton("Crear usuario");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				altaUsuario();
 			}
 		});
 		btnNewButton.setBounds(44, 114, 112, 23);
@@ -103,6 +122,14 @@ public class Login extends JFrame implements ActionListener {
 		UsuarioBD app = new UsuarioBD();
 		app.crearBDSqlite();
 	}
+	
+	//Para crear un usuario nuevo
+    private void altaUsuario() {
+    	//Quitamos la visibilidad de la pantalla de login
+    	this.setVisible(false);
+    	
+    	AltaUsuario m = new AltaUsuario();
+    }
 	
 	//Método del botón Aceptar
     private void acceder() {
@@ -150,8 +177,7 @@ public class Login extends JFrame implements ActionListener {
 		            	this.setVisible(false);
 		            	
 		            	// Registro en el logger la entrada del usuario
-//		            	RegistroBD reg = new RegistroBD();
-//		            	reg.insertarRegistro(user, "Entrada de usuario en el sistema");
+		            	LOGGER.log(Level.INFO, "Entrada del usuario "+user.getDni()+" en el sistema");
 		            	
 		            	AppBanco m = new AppBanco(user);
 					}
@@ -179,6 +205,35 @@ public class Login extends JFrame implements ActionListener {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		// Logger
+		Handler consoleHandler = new ConsoleHandler();
+        Handler fileHandler = null;
+        
+		try {
+			fileHandler = new FileHandler("./AppBanco.xml", true);
+	        // Para poner el logger en formato texto, si no se especifica sale en formato XML
+	        //SimpleFormatter simpleFormatter = new SimpleFormatter();
+	        //fileHandler.setFormatter(simpleFormatter);
+			XMLFormatter formatter = new XMLFormatter();
+			fileHandler.setFormatter(formatter);
+			
+	        LOG_RAIZ.addHandler(consoleHandler);
+	        LOG_RAIZ.addHandler(fileHandler);
+
+	        consoleHandler.setLevel(Level.ALL);
+	        fileHandler.setLevel(Level.ALL);
+
+	        LOGGER.log(Level.INFO, "AppBanco arrancada. Log inicializado");
+
+
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			LOGGER.log(Level.SEVERE, "Error de Seguridad: "+e1.getMessage());
+		} catch (IOException e1) {
+			LOGGER.log(Level.SEVERE, "Error de IO: "+e1.getMessage());
+		}
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -190,7 +245,7 @@ public class Login extends JFrame implements ActionListener {
 			        frame.addWindowListener(new WindowAdapter() {
 			            @Override
 			            public void windowClosing(WindowEvent e) {
-			            	System.out.println("SAlida de la aplicacion");
+			            	System.out.println("Salida de la aplicacion");
 			                System.exit(0);
 			            }
 			        });

@@ -9,6 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -27,6 +32,7 @@ import com.l2fprod.util.OS;
 import com.l2fprod.util.WindowUtils;
 
 import datos.UsuarioBD;
+import info.Cuenta;
 import info.Usuario;
 import seguridad.MD5;
 
@@ -37,11 +43,17 @@ import javax.swing.JComboBox;
 import java.awt.GridLayout;
 
 public class AppBanco extends JFrame implements ActionListener {
+	
+	private final static Logger LOGGER = Logger.getLogger("AppBanco.AppBanco");
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private DefaultComboBoxModel dcm;
 	
 	private Usuario usuario;
+	private JComboBox comboBox;
+	private JTextField textSaldo;
+	private Cuenta cuenta;
 
 	/**
 	 * Create the frame.
@@ -64,29 +76,62 @@ public class AppBanco extends JFrame implements ActionListener {
 
 		JPanel panel1 = new JPanel();
 		contentPane.add(panel1, BorderLayout.NORTH);
-		panel1.setLayout(new GridLayout(0, 5, 0, 0));
+		panel1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblNewLabel = new JLabel("Seleccionar cuenta: ");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel1.add(lblNewLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		panel1.add(comboBox);
+		JPanel panel2 = new JPanel();
+		contentPane.add(panel2, BorderLayout.CENTER);
 		
-		JLabel label1 = new JLabel("");
-		panel1.add(label1);
+		JLabel lblNewLabel_1 = new JLabel("Saldo actual: ");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel2.add(lblNewLabel_1);
 		
-		JLabel label2 = new JLabel("");
-		panel1.add(label2);
+		textSaldo = new JTextField();
+		textSaldo.setHorizontalAlignment(SwingConstants.CENTER);
+		textSaldo.setEditable(false);
+		panel2.add(textSaldo);
+		textSaldo.setColumns(10);
+		
+		JPanel panel3 = new JPanel();
+		contentPane.add(panel3, BorderLayout.SOUTH);
 		
 		JButton btnNewButton = new JButton("Cerrar sesion");
+		panel3.add(btnNewButton);
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				volverLogin();
 			}
 		});
-		panel1.add(btnNewButton);
 		
+		// Cargo el combo con todas las cuentas
+        dcm = new DefaultComboBoxModel();
+        dcm.removeAllElements();
+		List<Cuenta> lcuentas = this.usuario.getCuentas();
+		for (int i = 0;i < lcuentas.size(); i++) {
+			Cuenta cuen = lcuentas.get(i);
+			dcm.addElement(cuen);
+		}
+		
+		comboBox = new JComboBox(dcm);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cambioCuenta();
+			}
+		});
+		comboBox.setMaximumRowCount(15);
+		panel1.add(comboBox);
+		// Se selecciona la primera cuenta del combobox
+		this.cuenta = (Cuenta) comboBox.getSelectedItem();
+		textSaldo.setText(cuenta.getSaldo()+"");
+		
+        // Registro en el log la consulta de la cuenta
+        LOGGER.log(Level.INFO, "El usuario "+this.usuario.getDni()+" consulta la cuenta "+cuenta.getIBAN());
+
 		WindowUtils.centerOnScreen(this);
 		this.setVisible(true);
 		
@@ -98,8 +143,19 @@ public class AppBanco extends JFrame implements ActionListener {
         });
 
 	}
+	
+	private void cambioCuenta() {
+		Cuenta cuen = (Cuenta) comboBox.getSelectedItem();
+		
+		// Si ha seleccionado la misma cuenta no se hace nada
+		if (!cuen.getIBAN().equals(this.cuenta.getIBAN())) {
+			this.cuenta = cuen;
+			textSaldo.setText(cuenta.getSaldo()+"");
+	        // Registro en el log la consulta de la cuenta
+	        LOGGER.log(Level.INFO, "El usuario "+this.usuario.getDni()+" consulta la cuenta "+cuenta.getIBAN());
+		}
+	}
 
-	//Método para cerra sesion
 	private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();
@@ -118,6 +174,6 @@ public class AppBanco extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(e.getActionCommand());
 	}
 }

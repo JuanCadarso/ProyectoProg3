@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-06T01:36:06</date>
+  <millis>1604622966457</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+</log>

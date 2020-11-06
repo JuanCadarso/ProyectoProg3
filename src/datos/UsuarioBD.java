@@ -178,5 +178,112 @@ public class UsuarioBD {
         return user;
     }
 
+public Usuario verUsuario(String dni) {
+        
+    	Usuario user = new Usuario();
+    	
+        ResultSet rs = null;
+        StringBuffer sSql = null;
+        PreparedStatement  stm   = null;  
+        Connection con = null;
+        
+        try {
+			Class.forName(CLASS_SQLITE);
+			con = DriverManager.getConnection(STRING_CONN_SQLITE);
+ 
+        	sSql = new StringBuffer();
+            sSql.append("Select * from usuario where dni = ?");
+            stm = con.prepareStatement(sSql.toString());
+            
+            stm.setString(1, dni);
+           
+            rs = stm.executeQuery();
+            
+            if (rs.next()) {
+           		user = new Usuario(rs.getString("dni"), rs.getString("nombre"), rs.getString("apellido1"),
+           						   rs.getString("apellido2"), rs.getString("email"), rs.getString("password"));
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }  finally {
+			if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			if (stm!=null)
+				try {
+					stm.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			
+			if (con!=null)
+				try {
+					con.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			
+		}
+
+        return user;
+    }
+
+    public String insertarUsuario(Usuario user) {	    
+    	//ResultSet rs = null;
+	    StringBuffer sSql = null;
+	    PreparedStatement  st   = null;   
+	    
+	    Connection con = null;
+	
+	    String mensaje = null;
+	    
+	    try {
+			Class.forName(CLASS_SQLITE);
+			con = DriverManager.getConnection(STRING_CONN_SQLITE);
+		    
+	        sSql = new StringBuffer();
+	        sSql.append("INSERT INTO usuario VALUES (?, ?, ?, ?, ?, ?)");
+	        st = con.prepareStatement(sSql.toString());
+	
+	        st.setString(1, user.getDni());
+	        st.setString(2, user.getNombre());
+	        st.setString(3, user.getApellido1());
+	        st.setString(4, user.getApellido2());
+	        st.setString(5, user.getEmail());
+	        st.setString(6, user.getPassword());
+	        
+	        st.executeUpdate();
+	
+	    } catch (Exception e) {
+	        mensaje =  e.getMessage();
+	    }  finally {
+			/*if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}*/
+			if (st!=null)
+				try {
+					st.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+			if (con!=null)
+				try {
+					con.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+		}
+	    
+	    return mensaje;
+	}
+
+
 
 }

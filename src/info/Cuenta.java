@@ -80,5 +80,9 @@ public class Cuenta {
 		this.saldo = saldo;
 	}
 	
+	//To string del IBAN
+	public String toString() {
+		return this.IBAN;
+	}
 	
 }

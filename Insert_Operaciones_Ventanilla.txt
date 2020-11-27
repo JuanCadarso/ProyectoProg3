@@ -1,0 +1,42 @@
+INSERT INTO operacion_ventanilla VALUES  
+	(null,
+	 '2020-05-20 12:31:12.765',
+	 'ES12 1234 0230 21 1231003639',
+	 'Retirada efectivo',
+	 -320.00,
+	 'Sucursal 01');
+	 
+INSERT INTO operacion_ventanilla VALUES  
+	(null,
+	 '2020-06-11 11:22:32.065',
+	 'ES12 1234 0230 21 1231003639',
+	 'Retirada efectivo',
+	 -70.00,
+	 'Sucursal 20');
+	 
+INSERT INTO operacion_ventanilla VALUES  
+	(null,
+	 '2019-11-03 20:20:30.165',
+	 'ES12 1234 0230 21 1231003639',
+	 'Ingreso efectivo Paco Fernandez',
+	 87.50,
+	 'Sucursal 21');
+	 
+INSERT INTO operacion_ventanilla VALUES  
+	(null,
+	 '2020-03-11 11:22:32.065',
+	 'ES12 1234 3240 11 1231000989',
+	 'Ingreso efectivo Maria Agueda',
+	 1050.00,
+	 'Sucursal 12');
+	 
+INSERT INTO operacion_ventanilla VALUES  
+	(null,
+	 '2019-12-13 06:20:33.365',
+	 'ES12 1234 0240 10 9786500977',
+	 'Retirada efectivo',
+	 -40.00,
+	 'Sucursal 07');
+	 
+
+	 

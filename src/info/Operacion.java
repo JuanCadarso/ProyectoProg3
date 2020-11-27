@@ -5,33 +5,27 @@ import java.util.Date;
 //Clase general de operacion
 public class Operacion {
 
-	String idOperacion;
-	float importe;
-	String concepto;
 	Date fecha;
+	String IBAN;
+	String concepto;
+	float importe;
 	
-	/**
-	 *  Constructor de la clase Operacion
-	 * @param idOperacion
-	 * @param importe
-	 * @param concepto
-	 * @param fecha
-	 */
-	public Operacion(String idOperacion, float importe, String concepto, Date fecha) {
+	public Operacion(Date fecha, String iBAN, String concepto, float importe) {
 		super();
-		this.idOperacion = idOperacion;
-		this.importe = importe;
-		this.concepto = concepto;
 		this.fecha = fecha;
+		IBAN = iBAN;
+		this.concepto = concepto;
+		this.importe = importe;
 	}
 
 	//Getters y setters de la clase Operacion
-	public String getIdOperacion() {
-		return idOperacion;
+	
+	public String getIBAN() {
+		return IBAN;
 	}
 
-	public void setIdOperacion(String idOperacion) {
-		this.idOperacion = idOperacion;
+	public void setIBAN(String iBAN) {
+		IBAN = iBAN;
 	}
 
 	public float getImporte() {

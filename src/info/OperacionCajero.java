@@ -3,20 +3,20 @@ package info;
 import java.util.Date;
 
 //Clase de operacion realizada en un cajero, solo añade el establecimiento en el que se encuentra el cajero
-public class OperaciónCajero extends Operacion {
+public class OperacionCajero extends Operacion {
 
 	String establecimiento;
 
 	/**
-	 *  Constructor de la clase OperacionCajero
-	 * @param idOperacion
-	 * @param importe
-	 * @param concepto
+	 * Constructor clase OperacionCAjero
 	 * @param fecha
+	 * @param iBAN
+	 * @param concepto
+	 * @param importe
 	 * @param establecimiento
 	 */
-	public OperaciónCajero(String idOperacion, float importe, String concepto, Date fecha, String establecimiento) {
-		super(idOperacion, importe, concepto, fecha);
+	public OperacionCajero(Date fecha, String iBAN, String concepto, float importe, String establecimiento) {
+		super(fecha, iBAN, concepto, importe);
 		this.establecimiento = establecimiento;
 	}
 
@@ -29,5 +29,4 @@ public class OperaciónCajero extends Operacion {
 		this.establecimiento = establecimiento;
 	}
 	
-	
-}
+}	

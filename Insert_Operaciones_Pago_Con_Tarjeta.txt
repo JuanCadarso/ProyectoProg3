@@ -1,0 +1,58 @@
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2020-04-20 12:37:22.765',
+	 'ES12 1234 0230 21 1231003639',
+	 'Restaurante Albia',
+	 -230.45,
+	 'Cadena Albia');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2020-06-11 10:21:32.065',
+	 'ES12 1234 0230 21 1231003639',
+	 'Zara Artea',
+	 -70.50,
+	 'Comercio Zara Artea');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2020-06-15 08:55:32.065',
+	 'ES12 1234 0230 21 1231003639',
+	 'Devolucion Zara Artea',
+	 70.50,
+	 'Comercio Zara Artea');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2019-11-03 20:21:30.165',
+	 'ES12 1234 0230 21 1231003639',
+	 'Supermercado Mercadona',
+	 -80.05,
+	 'Mercadona Arangoiti');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2020-03-11 10:22:32.065',
+	 'ES22 1234 3240 11 1231000989',
+	 'Guarderia Okapi',
+	 -20.00,
+	 'Okapi servicios S.L.');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2020-05-10 18:55:10.465',
+	 'ES12 1234 3240 11 1231000989',
+	 'Devolucion Guarderia Okapi',
+	 10.00,
+	 'Okapi servicios S.L.');
+	 
+INSERT INTO operacion_tarjeta VALUES  
+	(null,
+	 '2019-12-13 06:27:33.365',
+	 'ES52 1234 0240 10 9786500977',
+	 'Gasolinera Shell',
+	 -40.37,
+	 'Gasolinera carretera Angles pk 234');
+	 
+
+	 

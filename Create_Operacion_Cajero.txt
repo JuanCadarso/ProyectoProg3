@@ -1,0 +1,8 @@
+CREATE TABLE operacion_cajero 
+	(codigo INTEGER primary key autoincrement,
+	 fecha varchar(20) NOT NULL,
+	 IBAN varchar(30) NOT NULL,
+	 concepto varchar(255) NOT NULL, 
+	 importe float NOT NULL,
+	 establecimiento varchar(255) NOT NULL);
+	 

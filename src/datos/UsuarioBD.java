@@ -261,12 +261,6 @@ public Usuario verUsuario(String dni) {
 	    } catch (Exception e) {
 	        mensaje =  e.getMessage();
 	    }  finally {
-			/*if (rs!=null)
-				try {
-					rs.close();
-				} catch (Exception e) {
-			        mensaje =  e.getMessage();
-				}*/
 			if (st!=null)
 				try {
 					st.close();

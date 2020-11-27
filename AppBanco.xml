@@ -13,3 +13,231 @@
   <message>AppBanco arrancada. Log inicializado</message>
 </record>
 </log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-06T12:32:02</date>
+  <millis>1604662322975</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+<record>
+  <date>2020-11-06T12:32:17</date>
+  <millis>1604662337378</millis>
+  <sequence>1</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>acceder</method>
+  <thread>24</thread>
+  <message>Entrada del usuario 11111111H en el sistema</message>
+</record>
+<record>
+  <date>2020-11-06T12:32:17</date>
+  <millis>1604662337395</millis>
+  <sequence>2</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>&lt;init&gt;</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 0230 21 1231003639</message>
+</record>
+<record>
+  <date>2020-11-06T12:32:20</date>
+  <millis>1604662340893</millis>
+  <sequence>3</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>cambioCuenta</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 3240 11 1231000989</message>
+</record>
+<record>
+  <date>2020-11-06T12:32:24</date>
+  <millis>1604662344179</millis>
+  <sequence>4</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>cambioCuenta</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 0230 21 1231003639</message>
+</record>
+<record>
+  <date>2020-11-06T12:32:25</date>
+  <millis>1604662345641</millis>
+  <sequence>5</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>cambioCuenta</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 3240 11 1231000989</message>
+</record>
+<record>
+  <date>2020-11-06T12:34:25</date>
+  <millis>1604662465817</millis>
+  <sequence>6</sequence>
+  <logger>AppBanco.AltaUsuario</logger>
+  <level>INFO</level>
+  <class>prpal.AltaUsuario</class>
+  <method>insertarUsuario</method>
+  <thread>24</thread>
+  <message>Usuario 12345678A dado de alta</message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-27T13:48:19</date>
+  <millis>1606481299118</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+<record>
+  <date>2020-11-27T13:48:38</date>
+  <millis>1606481318367</millis>
+  <sequence>1</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>acceder</method>
+  <thread>24</thread>
+  <message>Entrada del usuario 11111111H en el sistema</message>
+</record>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-27T13:49:13</date>
+  <millis>1606481353683</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+<record>
+  <date>2020-11-27T13:49:22</date>
+  <millis>1606481362288</millis>
+  <sequence>1</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>acceder</method>
+  <thread>24</thread>
+  <message>Entrada del usuario 11111111H en el sistema</message>
+</record>
+<record>
+  <date>2020-11-27T13:49:22</date>
+  <millis>1606481362310</millis>
+  <sequence>2</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>&lt;init&gt;</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 0230 21 1231003639</message>
+</record>
+<record>
+  <date>2020-11-27T13:49:36</date>
+  <millis>1606481376081</millis>
+  <sequence>3</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>cambioCuenta</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 3240 11 1231000989</message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-27T13:50:32</date>
+  <millis>1606481432202</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+<record>
+  <date>2020-11-27T13:50:41</date>
+  <millis>1606481441210</millis>
+  <sequence>1</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>acceder</method>
+  <thread>24</thread>
+  <message>Entrada del usuario 11111111H en el sistema</message>
+</record>
+<record>
+  <date>2020-11-27T13:50:41</date>
+  <millis>1606481441232</millis>
+  <sequence>2</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>&lt;init&gt;</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 0230 21 1231003639</message>
+</record>
+</log>
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2020-11-27T13:51:42</date>
+  <millis>1606481502551</millis>
+  <sequence>0</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>AppBanco arrancada. Log inicializado</message>
+</record>
+<record>
+  <date>2020-11-27T13:51:50</date>
+  <millis>1606481510452</millis>
+  <sequence>1</sequence>
+  <logger>AppBanco.Login</logger>
+  <level>INFO</level>
+  <class>prpal.Login</class>
+  <method>acceder</method>
+  <thread>24</thread>
+  <message>Entrada del usuario 11111111H en el sistema</message>
+</record>
+<record>
+  <date>2020-11-27T13:51:50</date>
+  <millis>1606481510473</millis>
+  <sequence>2</sequence>
+  <logger>AppBanco.AppBanco</logger>
+  <level>INFO</level>
+  <class>prpal.AppBanco</class>
+  <method>&lt;init&gt;</method>
+  <thread>24</thread>
+  <message>El usuario 11111111H consulta la cuenta ES12 1234 0230 21 1231003639</message>
+</record>
+</log>

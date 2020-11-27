@@ -7,29 +7,17 @@ public class Cuenta {
 
 	String IBAN;
 	String dni;
-	String nombre;
-	String apellido1;
-	String apellido2;
-	float saldo;
 	TreeMap<Date, Operacion> movimientos;
 	
 	/**
-	 * Constructor de la clas cuenta
+	 * Constructor de la clase cuenta
 	 * @param iBAN
 	 * @param dni
-	 * @param nombre
-	 * @param apellido1
-	 * @param apellido2
-	 * @param saldo
 	 */
-	public Cuenta(String iBAN, String dni, String nombre, String apellido1, String apellido2, float saldo) {
+	public Cuenta(String iBAN, String dni) {
 		super();
 		IBAN = iBAN;
 		this.dni = dni;
-		this.nombre = nombre;
-		this.apellido1 = apellido1;
-		this.apellido2 = apellido2;
-		this.saldo = saldo;
 		movimientos = new TreeMap<Date, Operacion>();
 	}
 
@@ -50,17 +38,6 @@ public class Cuenta {
 		this.dni = dni;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getApellido1() {
-		return apellido1;
-	}
 
 	public TreeMap<Date, Operacion> getMovimientos() {
 		return movimientos;
@@ -69,30 +46,12 @@ public class Cuenta {
 	public void setMovimientos(TreeMap<Date, Operacion> movimientos) {
 		this.movimientos = movimientos;
 	}
-
-	public void setApellido1(String apellido1) {
-		this.apellido1 = apellido1;
-	}
-
-	public String getApellido2() {
-		return apellido2;
-	}
-
-	public void setApellido2(String apellido2) {
-		this.apellido2 = apellido2;
-	}
-
-	public float getSaldo() {
-		return saldo;
-	}
-
-	public void setSaldo(float saldo) {
-		this.saldo = saldo;
-	}
 	
-	//To string del IBAN
+	public void setMovimiento(Operacion oper) {
+		this.movimientos.put(oper.getFecha(), oper);
+	}
+
 	public String toString() {
 		return this.IBAN;
 	}
-	
 }

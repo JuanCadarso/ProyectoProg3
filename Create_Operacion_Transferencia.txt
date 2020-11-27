@@ -1,0 +1,8 @@
+CREATE TABLE operacion_transferencia 
+	(codigo INTEGER primary key autoincrement,
+	 fecha varchar(20) NOT NULL,
+	 concepto varchar(255) NOT NULL, 
+	 importe float NOT NULL,
+	 IBAN_emisor varchar(30) NOT NULL,
+	 IBAN_receptor varchar(30) NOT NULL);
+	 

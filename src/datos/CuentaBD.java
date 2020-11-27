@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import info.Cuenta;
+import info.OperacionCajero;
+import info.OperacionPagoConTarjeta;
+import info.OperacionTransferencia;
+import info.OperacionVentanilla;
 import info.Usuario;
 
 public class CuentaBD {
@@ -37,8 +41,33 @@ public class CuentaBD {
             rs = stm.executeQuery();
             
             while (rs.next()) {
-            	Cuenta cuen = new Cuenta(rs.getString("IBAN"), rs.getString("dni"), rs.getString("nombre"), rs.getString("apellido1"),
-            						     rs.getString("apellido2"), rs.getFloat("saldo"));
+            	Cuenta cuen = new Cuenta(rs.getString("IBAN"), rs.getString("dni"));
+            	
+            	OperacionTransferenciaBD ot = new OperacionTransferenciaBD();
+            	List<OperacionTransferencia> loperst = ot.cargarOperacionesTransferencia(cuen);
+            	for (int i = 0;i < loperst.size();i++) {
+            		OperacionTransferencia op = loperst.get(i);
+            		cuen.setMovimiento(op);
+            	}
+            	OperacionCajeroBD oc = new OperacionCajeroBD();
+            	List<OperacionCajero> lopersc = oc.cargarOperacionesCajero(cuen);
+            	for (int i = 0;i < lopersc.size();i++) {
+            		OperacionCajero op = lopersc.get(i);
+            		cuen.setMovimiento(op);
+            	}
+            	OperacionPagoConTarjetaBD opct = new OperacionPagoConTarjetaBD();
+            	List<OperacionPagoConTarjeta> lopersopct = opct.cargarOperacionesPagoConTarjeta(cuen);
+            	for (int i = 0;i < lopersopct.size();i++) {
+            		OperacionPagoConTarjeta op = lopersopct.get(i);
+            		cuen.setMovimiento(op);
+            	}
+            	OperacionVentanillaBD ov = new OperacionVentanillaBD();
+            	List<OperacionVentanilla> lopersv = ov.cargarOperacionesVentanilla(cuen);
+            	for (int i = 0;i < lopersv.size();i++) {
+            		OperacionVentanilla op = lopersv.get(i);
+            		cuen.setMovimiento(op);
+            	}
+            	
             	lcuentas.add(cuen);
              }
 

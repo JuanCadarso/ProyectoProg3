@@ -1,0 +1,42 @@
+INSERT INTO operacion_cajero VALUES  
+	(null,
+	 '2020-05-20 18:31:12.765',
+	 'ES12 1234 0230 21 1231003639',
+	 'Retirada efectivo',
+	 -250.00,
+	 'Cajero 1234');
+	 
+INSERT INTO operacion_cajero VALUES  
+	(null,
+	 '2020-06-11 09:28:32.065',
+	 'ES12 1234 0230 21 1231003639',
+	 'Retirada efectivo',
+	 -70.00,
+	 'Cajero 5634');
+	 
+INSERT INTO operacion_cajero VALUES  
+	(null,
+	 '2019-11-03 20:32:30.165',
+	 'ES12 1234 0230 21 1231003639',
+	 'Ingreso efectivo',
+	 80.00,
+	 'Cajero 2122');
+	 
+INSERT INTO operacion_cajero VALUES  
+	(null,
+	 '2020-03-11 11:45:32.065',
+	 'ES12 1234 3240 11 1231000989',
+	 'Ingreso efectivo',
+	 1000.00,
+	 'Cajero 1234');
+	 
+INSERT INTO operacion_cajero VALUES  
+	(null,
+	 '2019-12-13 06:58:33.365',
+	 'ES12 1234 0240 10 9786500977',
+	 'Retirada efectivo',
+	 -20.00,
+	 'Cajero 1234');
+	 
+
+	 

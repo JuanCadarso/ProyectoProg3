@@ -1,0 +1,67 @@
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2020-05-20 10:31:12.765',
+	 'Pago comisiones venta',
+	 1230.00,
+	 'ES12 1234 0240 10 9786500977',
+	 'ES12 1234 0230 21 1231003639'
+	 );
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2020-02-01 11:22:32.065',
+	 'Transferencia pago clases',
+	 -40.50,
+	 'ES12 1234 0230 21 1231003639',
+	 'ES12 1234 3240 11 1231000989');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2019-12-03 20:20:30.165',
+	 'Pago servicio',
+	 -140.75,
+	 'ES12 1234 0230 21 1231003639',
+	 'ES12 5547 4355 00 3231223989');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2020-04-10 10:50:12.765',
+	 'Pago comisiones venta',
+	 -530.00,
+	 'ES12 1234 0230 21 1231003639',
+	 'ES12 3344 1140 10 4446500977');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2020-02-01 21:20:32.305',
+	 'Cuidado perro',
+	 -20.00,
+	 'ES12 1234 0230 21 1231003639',
+	 'ES12 6789 1230 01 1231004445');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2019-11-23 06:20:33.365',
+	 'Pago informes',
+	 750.00,
+	 'ES12 5547 1225 50 3233328488',
+	 'ES12 1234 0230 21 1231003639');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2020-02-01 11:22:32.065',
+	 'Cuidado ninos',
+	 20.00,
+	 'ES12 6789 1230 01 1231004445',
+	 'ES12 1234 3240 11 1231000989');
+	 
+INSERT INTO operacion_transferencia VALUES  
+	(null,
+	 '2019-11-23 06:20:33.365',
+	 'Pago comision venta acciones',
+	 -750.00,
+	 'ES12 1234 0240 10 9786500977',
+	 'ES12 5547 1225 50 3233328488');
+	 
+
+	 

@@ -1,25 +1,11 @@
 INSERT INTO cuenta VALUES  
 	('ES12 1234 0230 21 1231003639',
-	 '11111111H',
-	 'Juan',
-	 'Cadarso',
-	 'Infanzon',
-	 3547.46);
+	 '11111111H');
 	 
 INSERT INTO cuenta VALUES  
 	('ES12 1234 3240 11 1231000989',
-	 '11111111H',
-	 'Juan',
-	 'Cadarso',
-	 'Infanzon',
-	 1230.00);
+	 '11111111H');
 
 INSERT INTO cuenta VALUES  
 	('ES12 1234 0240 10 9786500977',
-	 '16027536K',
-	 'Pedro',
-	 'Ruiz',
-	 'Garcia',
-	 520.12);
-
-	 
+	 '16027536K');

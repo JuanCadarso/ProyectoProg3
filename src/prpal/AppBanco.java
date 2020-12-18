@@ -100,6 +100,13 @@ public class AppBanco extends JFrame implements ActionListener {
 	private JLabel lbl05_2_Operacion;
 	private JPanel panel_Centro;
 	private JPanel panel04_2;
+	private JButton btnNewButton_1;
+	private JLabel lblNewLabel_3;
+	private JLabel lblNewLabel_4;
+	private JLabel label;
+	private JLabel label_1;
+	private JLabel label_2;
+	private JLabel label_3;
 	
 	/**
 	 * Create the frame.
@@ -126,6 +133,34 @@ public class AppBanco extends JFrame implements ActionListener {
 		
 		JPanel panel3 = new JPanel();
 		contentPane.add(panel3, BorderLayout.SOUTH);
+		panel3.setLayout(new GridLayout(2, 4, 0, 0));
+		
+		btnNewButton_1 = new JButton("Realizar Transferencia");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				realizarTransferencia();
+			}
+		});
+		
+		label = new JLabel("");
+		panel3.add(label);
+		
+		label_1 = new JLabel("");
+		panel3.add(label_1);
+		
+		label_2 = new JLabel("");
+		panel3.add(label_2);
+		
+		label_3 = new JLabel("");
+		panel3.add(label_3);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel3.add(btnNewButton_1);
+		
+		lblNewLabel_3 = new JLabel("");
+		panel3.add(lblNewLabel_3);
+		
+		lblNewLabel_4 = new JLabel("");
+		panel3.add(lblNewLabel_4);
 		
 		JButton btnNewButton = new JButton("Cerrar sesion");
 		panel3.add(btnNewButton);
@@ -498,15 +533,19 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 
-	
-	//Se obtiene el saldo de esta cuenta y carga los movimiento de la cuenta ya ordenados.
 	private float cargarMovimientos() {
 		float saldo = 0;
-		this.l_movimientos = new ArrayList<Operacion>();
+		List<Operacion> l_mov = new ArrayList<Operacion>();
 		for(Entry<Date, Operacion> entry : this.cuenta.getMovimientos().entrySet()) {
 		  Operacion value = entry.getValue();
-		  this.l_movimientos.add(value);
+		  l_mov.add(value);
 		  saldo += value.getImporte();
+		}
+		
+		this.l_movimientos = new ArrayList<Operacion>();
+		for (int i = l_mov.size() - 1;i >= 0;i--) {
+			Operacion op = l_mov.get(i);
+			this.l_movimientos.add(op);
 		}
 		
 		return saldo;
@@ -560,6 +599,7 @@ public class AppBanco extends JFrame implements ActionListener {
 				lblTexto.setText("");
 			}
 		}
+		
 		int desde = (this.pag_actual - 1) * MOV_PAGINA;
 		int hasta = desde + MOV_PAGINA - 1;
 		if (this.pag_actual == this.num_paginas) {
@@ -580,6 +620,14 @@ public class AppBanco extends JFrame implements ActionListener {
 		panel05_1.setBackground(new Color(245,245,245));
 		panel05_2.setBackground(new Color(245,245,245));
 		
+		if (this.l_movimientos.size() == 0) {
+			lblTexto.setText("No hay movimientos en esta cuenta");
+			lblPagina.setText("");
+			
+			return;
+		}
+		
+
 		for (int i = desde;i <= hasta;i++) {
 			cont++;
 			Operacion op = this.l_movimientos.get(i);
@@ -732,6 +780,21 @@ public class AppBanco extends JFrame implements ActionListener {
 	private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+		
+		frame.setVisible(true);
+	}
+	
+	private void realizarTransferencia() {
+		this.setVisible(false);
+		AltaTransferencia frame = new AltaTransferencia(this.usuario, this.cuenta);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.addWindowListener(new WindowAdapter() {

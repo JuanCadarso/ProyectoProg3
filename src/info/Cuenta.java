@@ -9,6 +9,12 @@ public class Cuenta {
 	String dni;
 	TreeMap<Date, Operacion> movimientos;
 	
+	public Cuenta() {
+		super();
+		IBAN = null;
+		this.dni = "";
+		movimientos = null;
+	}
 	/**
 	 * Constructor de la clase cuenta
 	 * @param iBAN

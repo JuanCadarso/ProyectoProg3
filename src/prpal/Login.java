@@ -10,7 +10,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -38,6 +40,11 @@ import com.l2fprod.util.WindowUtils;
 import datos.CuentaBD;
 import datos.UsuarioBD;
 import info.Cuenta;
+import info.Operacion;
+import info.OperacionCajero;
+import info.OperacionPagoConTarjeta;
+import info.OperacionTransferencia;
+import info.OperacionVentanilla;
 import info.Usuario;
 import seguridad.MD5;
 
@@ -68,7 +75,7 @@ public class Login extends JFrame implements ActionListener {
 		setFont(new Font("Dialog", Font.BOLD, 12));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 376, 177);
+		setBounds(100, 100, 559, 177);
 		this.setTitle("Seguridad appBanco");
         WindowUtils.centerOnScreen(this);
         
@@ -77,46 +84,58 @@ public class Login extends JFrame implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNumbreDeUsuario = new JLabel("DNI:");
+		JLabel lblNumbreDeUsuario = new JLabel("DNI: ");
 		lblNumbreDeUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNumbreDeUsuario.setFont(new Font("Arial", Font.BOLD, 12));
-		lblNumbreDeUsuario.setBounds(21, 30, 117, 14);
+		lblNumbreDeUsuario.setBounds(89, 30, 117, 14);
 		contentPane.add(lblNumbreDeUsuario);
 		
 		textField = new JTextField();
 		textField.setFont(new Font("Arial", Font.PLAIN, 12));
-		textField.setBounds(140, 27, 190, 20);
+		textField.setBounds(208, 27, 149, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Contrase\u00F1a:");
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setFont(new Font("Arial", Font.BOLD, 12));
-		lblPassword.setBounds(22, 68, 112, 14);
+		lblPassword.setBounds(90, 68, 112, 14);
 		contentPane.add(lblPassword);
 		
 		passwordField = new JPasswordField();
 		passwordField.setFont(new Font("Arial", Font.PLAIN, 12));
-		passwordField.setBounds(140, 66, 190, 20);
+		passwordField.setBounds(208, 66, 190, 20);
 		contentPane.add(passwordField);
 		
 		JButton btnNewButton = new JButton("Crear usuario");
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				altaUsuario();
 			}
 		});
-		btnNewButton.setBounds(44, 114, 112, 23);
+		btnNewButton.setBounds(21, 114, 124, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton button = new JButton("Aceptar");
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				acceder();			
 			}
 		});
-		button.setBounds(236, 114, 94, 23);
+		button.setBounds(436, 114, 94, 23);
 		contentPane.add(button);
+		
+		JButton btnModificarUsuario = new JButton("Modificar usuario");
+		btnModificarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modificarUsuario();
+			}
+		});
+		btnModificarUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnModificarUsuario.setBounds(208, 114, 149, 23);
+		contentPane.add(btnModificarUsuario);;
 		
 		// Si la base de datos no existe se crea
 		UsuarioBD app = new UsuarioBD();
@@ -176,16 +195,31 @@ public class Login extends JFrame implements ActionListener {
 						for (int i = 0;i < lcuentas.size(); i++) {
 							Cuenta cuen = lcuentas.get(i);
 							System.out.println("\tCuenta: "+cuen.getIBAN());
-						}
-		            	this.setVisible(false);
-		            	
-		            	// Registro en el logger la entrada del usuario
-		            	LOGGER.log(Level.INFO, "Entrada del usuario "+user.getDni()+" en el sistema");
-		            	
-		            	AppBanco m = new AppBanco(user);
+							for(Entry<Date, Operacion> entry : cuen.getMovimientos().entrySet()) {
+							  Date key = entry.getKey();
+							  Operacion value = entry.getValue();
+							  String tipo = "";
+							  if (value instanceof OperacionCajero) {
+								  OperacionCajero op = (OperacionCajero) value;
+								  tipo = "OperacionCajero - "+op.getConcepto();
+							  }
+							  if (value instanceof OperacionPagoConTarjeta) {
+								  OperacionPagoConTarjeta op = (OperacionPagoConTarjeta) value;
+								  tipo = "OperacionPagoConTarjeta - "+op.getConcepto();
+							  }
+							  if (value instanceof OperacionTransferencia) {
+								  OperacionTransferencia op = (OperacionTransferencia) value;
+								  tipo = "OperacionTransferencia - "+op.getConcepto();
+							  }
+							  if (value instanceof OperacionVentanilla) {
+								  OperacionVentanilla op = (OperacionVentanilla) value;
+								  tipo = "OperacionVentanilla - "+op.getConcepto();
+							  }
+							  System.out.println("\t\tOperacion: "+key+" - "+tipo);
+							}
 					}
-				}
-			} catch (Exception e) {
+			}}
+				} catch (Exception e) {
 	            JOptionPane mensaje = new JOptionPane();
 	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
@@ -207,6 +241,52 @@ public class Login extends JFrame implements ActionListener {
     	usuar.setCuentas(cuenbd.cargarCuentasUsuario(user));
     	
     	return usuar;
+    }
+    
+    private void modificarUsuario() {
+        String dni = this.textField.getText().toUpperCase().trim();
+        this.textField.setText(dni);
+        String pass = String.copyValueOf(this.passwordField.getPassword()).trim();
+        
+        if (dni.equals("") || pass.equals("")) {
+            JOptionPane mensaje = new JOptionPane();
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+            mensaje.showMessageDialog(null, "Debe teclear DNI y contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
+        } else {
+        	UsuarioBD us = new UsuarioBD();
+
+        	try {
+	            String clave = "";
+	            
+                MD5 md = MD5.getInstance();
+                clave = md.hashData(pass.getBytes());
+
+				Usuario user = us.validarUsuario(dni, clave);
+				if (user.getDni() == null) {
+		            JOptionPane mensaje = new JOptionPane();
+		            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+		            mensaje.showMessageDialog(null, user.getNombre(), "Aviso", JOptionPane.WARNING_MESSAGE);
+				} else {
+					user = cargarCuentasUsuario(user);
+					
+	            	this.setVisible(false);
+	            	
+	            	// Registro en el logger la entrada del usuario en modificacion
+	            	LOGGER.log(Level.INFO, "Acceso a modificacion del usuario "+user.getDni());
+	            	
+	            	ModificacionUsuario m = new ModificacionUsuario(user);
+				}
+			} catch (Exception e) {
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+			} 
+        }
+
+    	
     }
     
 	/**

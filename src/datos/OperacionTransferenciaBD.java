@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,5 +84,62 @@ public class OperacionTransferenciaBD {
 
         return lopers;
     }
+    
+    public String insertarTransferencis(OperacionTransferencia trans) {	    
+    	ResultSet rs = null;
+	    StringBuffer sSql = null;
+	    PreparedStatement  st   = null;   
+	    
+	    Connection con = null;
+	
+	    String mensaje = null;
+	    
+	    try {
+			Class.forName(CLASS_SQLITE);
+			con = DriverManager.getConnection(STRING_CONN_SQLITE);
+		    
+	        sSql = new StringBuffer();
+	        sSql.append("INSERT INTO operacion_transferencia VALUES (null, ?, ?, ?, ?, ?)");
+	        st = con.prepareStatement(sSql.toString());
+	
+	        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	        String fecha = formatter.format(trans.getFecha());
+	        
+	        st.setString(1, fecha);
+	        st.setString(2, trans.getConcepto());
+	        st.setFloat(3, trans.getImporte());
+	        st.setString(4, trans.getIBAN());
+	        st.setString(5, trans.getIBANReceptor());
+	        
+	        st.executeUpdate();
+	
+	    } catch (Exception e) {
+	        mensaje =  e.getMessage();
+	    }  finally {
+			if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+			if (st!=null)
+				try {
+					st.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+			if (con!=null)
+				try {
+					con.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+		}
+	    
+	    return mensaje;
+	}
 
 }
+
+
+

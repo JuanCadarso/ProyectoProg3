@@ -9,13 +9,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import info.Usuario;
 
 public class UsuarioBD {
 
 	public static final String CLASS_SQLITE = "org.sqlite.JDBC";
-	public static final String STRING_CONN_SQLITE = "jdbc:sqlite:AppBancoBD.db"; //Cadena de conexion
+	public static final String STRING_CONN_SQLITE = "jdbc:sqlite:AppBancoBD.db";
 
 	public void crearBDSqlite() {
 		
@@ -79,6 +81,102 @@ public class UsuarioBD {
 					// Insercion de cuentas de pruebas
 					for (int i = 0;i < cuentas.length; i++) {
 						stat.executeUpdate(cuentas[i]);
+					}
+					
+					objReader.close();
+					
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Create_Operacion_Transferencia.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					// Creacion tabla Operaciones Transferencia
+					stat.executeUpdate(cadena);
+					
+					objReader.close();
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Insert_Operaciones_Transferencia.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					String [] opeTrans = cadena.split(";");
+					// Insercion de operaciones de transferencia de pruebas
+					for (int i = 0;i < opeTrans.length; i++) {
+						stat.executeUpdate(opeTrans[i]);
+					}
+					
+					objReader.close();
+					
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Create_Operacion_Pago_Con_Tarjeta.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					// Creacion tabla Operaciones Pago Con Tarjeta
+					stat.executeUpdate(cadena);
+					
+					objReader.close();
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Insert_Operaciones_Pago_Con_Tarjeta.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					String [] opeTarj = cadena.split(";");
+					// Insercion de operaciones de Pago Con Tarjeta
+					for (int i = 0;i < opeTarj.length; i++) {
+						stat.executeUpdate(opeTarj[i]);
+					}
+					
+					objReader.close();
+					
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Create_Operacion_Cajero.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					// Creacion tabla Operaciones Cajero
+					stat.executeUpdate(cadena);
+					
+					objReader.close();
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Insert_Operaciones_Cajero.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					String [] opeCaje = cadena.split(";");
+					// Insercion de operaciones de Cajero
+					for (int i = 0;i < opeCaje.length; i++) {
+						stat.executeUpdate(opeCaje[i]);
+					}
+					
+					objReader.close();
+					
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Create_Operacion_Ventanilla.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					// Creacion tabla Operaciones Ventanilla
+					stat.executeUpdate(cadena);
+					
+					objReader.close();
+					cadena = "";
+					strCurrentLine = "";
+					objReader = new BufferedReader(new FileReader("Insert_Operaciones_Ventanilla.txt"));
+					while ((strCurrentLine = objReader.readLine()) != null) {
+						cadena += strCurrentLine;
+					}
+					String [] opeVent = cadena.split(";");
+					// Insercion de operaciones de Ventanilla
+					for (int i = 0;i < opeVent.length; i++) {
+						stat.executeUpdate(opeVent[i]);
 					}
 					
 					objReader.close();
@@ -178,7 +276,7 @@ public class UsuarioBD {
         return user;
     }
 
-public Usuario verUsuario(String dni) {
+    public Usuario verUsuario(String dni) {
         
     	Usuario user = new Usuario();
     	
@@ -233,7 +331,7 @@ public Usuario verUsuario(String dni) {
     }
 
     public String insertarUsuario(Usuario user) {	    
-    	//ResultSet rs = null;
+    	ResultSet rs = null;
 	    StringBuffer sSql = null;
 	    PreparedStatement  st   = null;   
 	    
@@ -261,6 +359,12 @@ public Usuario verUsuario(String dni) {
 	    } catch (Exception e) {
 	        mensaje =  e.getMessage();
 	    }  finally {
+			if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
 			if (st!=null)
 				try {
 					st.close();
@@ -278,6 +382,129 @@ public Usuario verUsuario(String dni) {
 	    return mensaje;
 	}
 
+    public String modificarUsuario(String dni, Usuario user) {	    
+    	ResultSet rs = null;
+	    StringBuffer sSql = null;
+	    PreparedStatement  st   = null;   
+	    
+	    Connection con = null;
+	
+	    String mensaje = null;
+	    
+	    try {
+			Class.forName(CLASS_SQLITE);
+			con = DriverManager.getConnection(STRING_CONN_SQLITE);
+
+	        sSql = new StringBuffer();
+			
+			if (user.getPassword().equals("")) {
+		        sSql.append("UPDATE usuario set dni = ?, nombre = ?, apellido1 = ?, ");
+		        sSql.append("apellido2 = ?, email = ? WHERE dni = ?");
+		        
+		        st = con.prepareStatement(sSql.toString());
+		    	
+		        st.setString(1, user.getDni());
+		        st.setString(2, user.getNombre());
+		        st.setString(3, user.getApellido1());
+		        st.setString(4, user.getApellido2());
+		        st.setString(5, user.getEmail());
+		        st.setString(6, dni);
+			} else {
+		        sSql.append("UPDATE usuario set dni = ?, nombre = ?, apellido1 = ?, ");
+		        sSql.append("apellido2 = ?, email = ?, password = ? WHERE dni = ?");
+		        st = con.prepareStatement(sSql.toString());
+		    	
+		        st.setString(1, user.getDni());
+		        st.setString(2, user.getNombre());
+		        st.setString(3, user.getApellido1());
+		        st.setString(4, user.getApellido2());
+		        st.setString(5, user.getEmail());
+		        st.setString(6, user.getPassword());
+		        st.setString(7, dni);
+			}
+	        
+	        st.executeUpdate();
+	
+	    } catch (Exception e) {
+	        mensaje =  e.getMessage();
+	    }  finally {
+			if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+			if (st!=null)
+				try {
+					st.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+			if (con!=null)
+				try {
+					con.close();
+				} catch (Exception e) {
+			        mensaje =  e.getMessage();
+				}
+		}
+	    
+	    return mensaje;
+	}
+
+    public List<Usuario> cargarUsuarios() {
+        
+    	List<Usuario> users = new ArrayList<Usuario>();
+    	
+        ResultSet rs = null;
+        StringBuffer sSql = null;
+        PreparedStatement  stm   = null;  
+        Connection con = null;
+        
+        try {
+			Class.forName(CLASS_SQLITE);
+			con = DriverManager.getConnection(STRING_CONN_SQLITE);
+ 
+        	sSql = new StringBuffer();
+            sSql.append("Select * from usuario");
+            stm = con.prepareStatement(sSql.toString());
+            
+            rs = stm.executeQuery();
+            
+            while (rs.next()) {
+           		Usuario user = new Usuario(rs.getString("dni"), rs.getString("nombre"), rs.getString("apellido1"),
+           						   rs.getString("apellido2"), rs.getString("email"), rs.getString("password"));
+            	CuentaBD cuenbd = new CuentaBD();
+            	user.setCuentas(cuenbd.cargarCuentasUsuario(user));
+            	users.add(user);
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }  finally {
+			if (rs!=null)
+				try {
+					rs.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			if (stm!=null)
+				try {
+					stm.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			
+			if (con!=null)
+				try {
+					con.close();
+				} catch (Exception e) {
+		            System.out.println("ERROR: " + e.getMessage());
+				}
+			
+		}
+
+        return users;
+    }
 
 
 }

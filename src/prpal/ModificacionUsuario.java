@@ -2,6 +2,8 @@ package prpal;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -9,16 +11,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -30,14 +37,9 @@ import info.Cuenta;
 import info.Usuario;
 import seguridad.MD5;
 
-import javax.swing.JTextField;
-import java.awt.Font;
-import javax.swing.JPasswordField;
-import java.awt.FlowLayout;
+public class ModificacionUsuario extends JFrame implements ActionListener {
 
-public class AltaUsuario extends JFrame implements ActionListener {
-
-	private final static Logger LOGGER = Logger.getLogger("AppBanco.AltaUsuario");
+	private final static Logger LOGGER = Logger.getLogger("AppBanco.ModificacionUsuario");
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -50,20 +52,25 @@ public class AltaUsuario extends JFrame implements ActionListener {
 	private JPasswordField password_1;
 	
 	private Usuario usuario;
+	private String dni_origen;
 	private Cuenta cuenta;
 	private JTextField textIban;
 	
 	/**
 	 * Create the frame.
 	 */
-	public AltaUsuario() {
+	public ModificacionUsuario(Usuario user) {
+		this.usuario = user;
+		this.cuenta = null;
+		this.dni_origen = user.getDni();
+		
 		setFont(new Font("Dialog", Font.BOLD, 12));
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		setBounds(100, 100, 618, 430);
-		this.setTitle("Alta de Usuario");
+		this.setTitle("Modificacion de Usuario");
         WindowUtils.centerOnScreen(this);
         
 		contentPane = new JPanel();
@@ -73,7 +80,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		
 		JPanel panel1 = new JPanel();
 		contentPane.add(panel1);
-		panel1.setLayout(new GridLayout(10, 1, 0, 0));
+		panel1.setLayout(new GridLayout(11, 1, 0, 0));
 		
 		JPanel panel = new JPanel();
 		panel1.add(panel);
@@ -104,6 +111,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		textNombre.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		panel_10.add(textNombre);
 		textNombre.setColumns(20);
+		textNombre.setText(this.usuario.getNombre());
 		
 		JPanel panel_2 = new JPanel();
 		panel1.add(panel_2);
@@ -121,6 +129,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		textApell1.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		panel_11.add(textApell1);
 		textApell1.setColumns(20);
+		textApell1.setText(this.usuario.getApellido1());
 		
 		JPanel panel_3 = new JPanel();
 		panel1.add(panel_3);
@@ -138,6 +147,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		textApell2.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		panel_12.add(textApell2);
 		textApell2.setColumns(20);
+		textApell2.setText(this.usuario.getApellido2());
 		
 		JPanel panel_4 = new JPanel();
 		panel1.add(panel_4);
@@ -155,6 +165,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		textDni.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		panel_13.add(textDni);
 		textDni.setColumns(10);
+		textDni.setText(this.usuario.getDni());
 		
 		JPanel panel_5 = new JPanel();
 		panel1.add(panel_5);
@@ -172,6 +183,7 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		textEmail.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textEmail.setColumns(20);
 		panel_14.add(textEmail);
+		textEmail.setText(this.usuario.getEmail());
 		
 		JPanel panel_6 = new JPanel();
 		panel1.add(panel_6);
@@ -213,15 +225,40 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		panel_18.add(panel_19);
 		panel_19.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JLabel lblCuenta = new JLabel("Cuenta:  ");
+		JLabel lblCuenta = new JLabel("Cuentas:  ");
 		panel_19.add(lblCuenta);
 		lblCuenta.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblCuenta.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
+		// Cargo el combo con todas las cuentas
+		DefaultComboBoxModel dcm = new DefaultComboBoxModel();
+        dcm.removeAllElements();
+		List<Cuenta> lcuentas = this.usuario.getCuentas();
+		for (int i = 0;i < lcuentas.size(); i++) {
+			Cuenta cuen = lcuentas.get(i);
+			dcm.addElement(cuen);
+		}
+		JComboBox comboBox = new JComboBox(dcm);
+		comboBox.setMaximumRowCount(15);
+		panel_19.add(comboBox);
+		
+		JPanel panel_20 = new JPanel();
+		panel1.add(panel_20);
+		
+		JPanel panel_21 = new JPanel();
+		panel_20.add(panel_21);
+		panel_21.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblAadirCuenta = new JLabel("A\u00F1adir cuenta:  ");
+		lblAadirCuenta.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAadirCuenta.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel_21.add(lblAadirCuenta);
+		
 		textIban = new JTextField();
-		panel_19.add(textIban);
+		textIban.setText((String) null);
 		textIban.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		textIban.setColumns(30);
+		panel_21.add(textIban);
 		
 		JPanel panel_8 = new JPanel();
 		panel1.add(panel_8);
@@ -255,11 +292,11 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		JLabel lblNewLabel_1 = new JLabel("");
 		panel2.add(lblNewLabel_1);
 		
-		JButton btnCrear = new JButton("Crear");
+		JButton btnCrear = new JButton("Modificar");
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (validar()) {
-					if (insertarUsuario()) {
+					if (modificarUsuario()) {
 						volverLogin();
 					}
 				}
@@ -384,136 +421,152 @@ public class AltaUsuario extends JFrame implements ActionListener {
     	String pass1 = String.copyValueOf(this.password_1.getPassword()).trim();
     	String pass2 = String.copyValueOf(this.password_2.getPassword()).trim();
 
-    	if (pass1.equals("")) {
-    		password_1.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "Debe teclear la contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
+    	if (!pass1.equals("") || !pass2.equals("")) {
+	        if (pass1.equals("")) {
+	    		password_1.requestFocus();
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "Debe teclear la contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
+	
+	    	if (!isPassword(pass1)) {
+	    		password_1.requestFocus();
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "La contraseña tecleada es erronea", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
+	
+	    	if (pass2.equals("")) {
+	    		password_2.requestFocus();
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "Debe repetir la contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
+	
+	    	if (!pass1.equals(pass2)) {
+	    		password_2.requestFocus();
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "Las contraseñas tecleadas no coinciden", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	} 
     	}
-
-    	if (!isPassword(pass1)) {
-    		password_1.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "La contraseña tecleada es erronea", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
-    	}
-
-    	if (pass2.equals("")) {
-    		password_2.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "Debe repetir la contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
-    	}
-
-    	if (!pass1.equals(pass2)) {
-    		password_2.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "Las contraseñas tecleadas no coinciden", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
-    	} 
     	
       	textIban.setText(textIban.getText().trim());
     	String iban = textIban.getText();
-    	if (iban.equals("")) {
-    		textIban.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "Debe teclear el IBAN de la cuenta", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
+    	if (!iban.equals("")) {
+	    	if (!isIBAN(iban)) {
+	    		textIban.requestFocus();
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "El IBAN tecleado es erroneo. El formato debe ser ESnn nnnn nnnn nn nnnnnnnnnn", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
+	    	// Validamos que no exista la cuenta
+	    	CuentaBD cu = new CuentaBD();
+	    	Cuenta cuen = cu.verCuenta(iban);
+	    	
+			if (cuen.getIBAN() != null) {
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "La cuenta ya existe. Modificacion cancelada.", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	        }
+	    	// Creamos una instancia para la nueva cuenta del usuario
+	    	this.cuenta = new Cuenta(iban, dni);
     	}
-
-    	if (!isIBAN(iban)) {
-    		textIban.requestFocus();
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "El IBAN tecleado es erroneo. El formato debe ser ESnn nnnn nnnn nn nnnnnnnnnn", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
+    	
+    	// Validamos que no exista el usuario si se cambia el DNI
+    	if (!dni_origen.equalsIgnoreCase(dni)) {
+	    	UsuarioBD us = new UsuarioBD();
+	    	Usuario user = us.verUsuario(dni);
+	    	
+			if (user.getDni() != null) {
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null, "Ya existe un usuario con el nuevo DNI. Modificacion cancelada.", "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	        }
     	}
-
-    	// Validamos que no exista el usuario
-    	UsuarioBD us = new UsuarioBD();
-    	Usuario user = us.verUsuario(dni);
-    	
-		if (user.getDni() != null) {
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "El usuario ya existe. Alta cancelada.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-		
-    	// Validamos que no exista la cuenta
-    	CuentaBD cu = new CuentaBD();
-    	Cuenta cuen = cu.verCuenta(iban);
-    	
-		if (cuen.getIBAN() != null) {
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "La cuenta ya existe. Alta cancelada.", "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-		
+    			
     	// Creamos una instancia con el nuevo usuario
     	this.usuario = new Usuario(dni, nombre, apell1, apell2, email, "");
-        MD5 md;
-		try {
-			md = MD5.getInstance();
-	        this.usuario.setPassword(md.hashData(pass1.getBytes()));
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-    	// Creamos una instancia para la cuenta de apertura del nuevo usuario
-    	this.cuenta = new Cuenta(iban, dni);
+	    if (!pass1.equals("")) {
+	        MD5 md;
+			try {
+				md = MD5.getInstance();
+		        this.usuario.setPassword(md.hashData(pass1.getBytes()));
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
 
     	return true;
     	
     }
 
-    public boolean insertarUsuario() {
-		// Se da de alta el nuevo usuario
+    public boolean modificarUsuario() {
+		// Se modifica el usuario
     	UsuarioBD us = new UsuarioBD();
 
-    	String msg = us.insertarUsuario(this.usuario);
+    	String msg = us.modificarUsuario(this.dni_origen, this.usuario);
     	if (msg != null) {
             JOptionPane mensaje = new JOptionPane();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null, "Error insertando usuario: "+msg, "Aviso", JOptionPane.WARNING_MESSAGE);
+            mensaje.showMessageDialog(null, "Error modificando usuario: "+msg, "Aviso", JOptionPane.WARNING_MESSAGE);
             return false;
     	}
     	
-		// Se da de alta la cuenta de apertura del nuevo usuario
-    	CuentaBD cu = new CuentaBD();
-
-    	msg = cu.insertarCuenta(this.cuenta);
-    	if (msg != null) {
-            JOptionPane mensaje = new JOptionPane();
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-            mensaje.showMessageDialog(null,"Error insertando cuenta de usuario: "+ msg, "Aviso", JOptionPane.WARNING_MESSAGE);
-            return false;
+    	// Si se cambia el DNI del usuario se cambia dicho dni en todas sus cuentas
+    	if (!dni_origen.equalsIgnoreCase(this.usuario.getDni())) {
+	    	CuentaBD cu = new CuentaBD();
+	    	
+	    	msg = cu.cambiarDniCuentas(this.usuario.getDni(), dni_origen);
+	    	if (msg != null) {
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null,"Error modificando cuentas de usuario: "+ msg, "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
+    	}
+    	
+    	if (this.cuenta != null) {
+			// Se da de alta la nueva cuenta del usuario
+	    	CuentaBD cu = new CuentaBD();
+	
+	    	msg = cu.insertarCuenta(this.cuenta);
+	    	if (msg != null) {
+	            JOptionPane mensaje = new JOptionPane();
+	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
+	            mensaje.showMessageDialog(null,"Error insertando cuenta de usuario: "+ msg, "Aviso", JOptionPane.WARNING_MESSAGE);
+	            return false;
+	    	}
     	}
     	
         JOptionPane mensaje = new JOptionPane();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
-        mensaje.showMessageDialog(null, "Usuario dado de alta correctamente.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        mensaje.showMessageDialog(null, "Usuario modificado correctamente.", "Aviso", JOptionPane.WARNING_MESSAGE);
         
-        // Registro en el log el alta de usuario
-        LOGGER.log(Level.INFO, "Usuario "+this.usuario.getDni()+" dado de alta");
+        // Registro en el log la modificacion de usuario
+        if (!dni_origen.equalsIgnoreCase(this.usuario.getDni())) {
+        	LOGGER.log(Level.INFO, "Usuario "+ this.dni_origen +" ha cambiado al DNI " + this.usuario.getDni());
+        }
+        LOGGER.log(Level.INFO, "Usuario "+this.usuario.getDni()+" modificado");
         
         return true;
     }
@@ -633,4 +686,5 @@ public class AltaUsuario extends JFrame implements ActionListener {
 		
 	}
 }
+
 

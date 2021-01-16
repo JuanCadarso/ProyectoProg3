@@ -18,6 +18,7 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
 import javax.swing.JButton;
@@ -50,9 +51,8 @@ import seguridad.MD5;
 
 import javax.swing.SwingConstants;
 
-//Clase de la ventana de login
 public class Login extends JFrame implements ActionListener {
-	
+
 	// El log de nivel superior
     private final static Logger LOG_RAIZ = Logger.getLogger("AppBanco");
 
@@ -62,6 +62,10 @@ public class Login extends JFrame implements ActionListener {
 	private final static Logger LOG_ALTAUSUARIO = Logger.getLogger("AppBanco.AltaUsuario");
 	// El log para AppBanco
 	private final static Logger LOG_APPBANCO = Logger.getLogger("AppBanco.AppBanco");
+	// El log para AltaTransferencia
+	private final static Logger LOG_ALTATRANSFERENCIA = Logger.getLogger("AppBanco.AltaTransferencia");
+	// El log para ModificacionUsuario
+	private final static Logger LOG_MODIFICACIONUSUARIO = Logger.getLogger("AppBanco.ModificacionUsuario");
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -69,7 +73,7 @@ public class Login extends JFrame implements ActionListener {
 	private JPasswordField passwordField;
 
 	/**
-	 * Creación de la pantalla de login
+	 * Create the frame.
 	 */
 	public Login() {
 		setFont(new Font("Dialog", Font.BOLD, 12));
@@ -135,38 +139,30 @@ public class Login extends JFrame implements ActionListener {
 		});
 		btnModificarUsuario.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnModificarUsuario.setBounds(208, 114, 149, 23);
-		contentPane.add(btnModificarUsuario);;
+		contentPane.add(btnModificarUsuario);
 		
 		// Si la base de datos no existe se crea
 		UsuarioBD app = new UsuarioBD();
 		app.crearBDSqlite();
 	}
 	
-	//Para crear un usuario nuevo
     private void altaUsuario() {
-    	//Quitamos la visibilidad de la pantalla de login
     	this.setVisible(false);
     	
     	AltaUsuario m = new AltaUsuario();
     }
-	
-	/**
-	 * Método encargado de dar acceso al usuario a la app. Le da la funcionalidad
-	 * al botón aceptar.
-	 */
+    
     private void acceder() {
-        String dni = this.textField.getText().toUpperCase().trim(); //Campo del DNI
+        String dni = this.textField.getText().toUpperCase().trim();
         this.textField.setText(dni);
-        String pass = String.copyValueOf(this.passwordField.getPassword()).trim(); //Campo de la contraseña
+        String pass = String.copyValueOf(this.passwordField.getPassword()).trim();
         
-        //Si no se instroduce nada en DNI o contraseña se saca un dialogo con un aviso
         if (dni.equals("") || pass.equals("")) {
             JOptionPane mensaje = new JOptionPane();
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
             mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
             mensaje.showMessageDialog(null, "Debe teclear DNI y contraseña", "Aviso", JOptionPane.WARNING_MESSAGE);
         } else {
-        	//
         	UsuarioBD us = new UsuarioBD();
 
         	try {
@@ -217,9 +213,17 @@ public class Login extends JFrame implements ActionListener {
 							  }
 							  System.out.println("\t\tOperacion: "+key+" - "+tipo);
 							}
+
+						}
+		            	this.setVisible(false);
+		            	
+		            	// Registro en el logger la entrada del usuario
+		            	LOGGER.log(Level.INFO, "Entrada del usuario "+user.getDni()+" en el sistema");
+		            	
+		            	AppBanco m = new AppBanco(user);
 					}
-			}}
-				} catch (Exception e) {
+				}
+			} catch (Exception e) {
 	            JOptionPane mensaje = new JOptionPane();
 	            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	            mensaje.setLocation(screenSize.width / 2 - mensaje.getSize().width / 2, screenSize.height / 2 - mensaje.getSize().height / 2);
@@ -229,11 +233,6 @@ public class Login extends JFrame implements ActionListener {
 
     }
 
-    /**
-     * Carga las cuyenta del usuario
-     * @param user
-     * @return
-     */
     private Usuario cargarCuentasUsuario(Usuario user) {
     	Usuario usuar = user;
     	
@@ -294,6 +293,7 @@ public class Login extends JFrame implements ActionListener {
 	 */
 	public static void main(String[] args) {
 		// Logger
+		// Fuente https://medium.com/el-acordeon-del-programador/logs-en-java-con-java-util-logging-d344ae2ba7bc
 		Handler consoleHandler = new ConsoleHandler();
         Handler fileHandler = null;
         
@@ -322,7 +322,6 @@ public class Login extends JFrame implements ActionListener {
 			LOGGER.log(Level.SEVERE, "Error de IO: "+e1.getMessage());
 		}
 
-		//Carga de la pantalla de login así como del Look and Feel
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

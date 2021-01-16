@@ -5,7 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -40,8 +45,12 @@ import java.awt.FlowLayout;
 import javax.swing.JComboBox;
 import java.awt.GridLayout;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+
 import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 
 public class AppBanco extends JFrame implements ActionListener {
 
@@ -102,11 +111,16 @@ public class AppBanco extends JFrame implements ActionListener {
 	private JPanel panel04_2;
 	private JButton btnNewButton_1;
 	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
 	private JLabel label;
 	private JLabel label_1;
 	private JLabel label_2;
 	private JLabel label_3;
+	private JButton btnNewButton_2;
+	private JLabel label_4;
+	private JLabel label_5;
+	private JLabel lblNewLabel_4;
+	private JButton btnFecha;
+	private JButton btnImporte;
 	
 	/**
 	 * Create the frame.
@@ -133,9 +147,9 @@ public class AppBanco extends JFrame implements ActionListener {
 		
 		JPanel panel3 = new JPanel();
 		contentPane.add(panel3, BorderLayout.SOUTH);
-		panel3.setLayout(new GridLayout(2, 4, 0, 0));
+		panel3.setLayout(new GridLayout(0, 5, 0, 0));
 		
-		btnNewButton_1 = new JButton("Realizar Transferencia");
+		btnNewButton_1 = new JButton("Transferencia");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				realizarTransferencia();
@@ -153,14 +167,51 @@ public class AppBanco extends JFrame implements ActionListener {
 		
 		label_3 = new JLabel("");
 		panel3.add(label_3);
+		
+		label_4 = new JLabel("");
+		panel3.add(label_4);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel3.add(btnNewButton_1);
 		
 		lblNewLabel_3 = new JLabel("");
 		panel3.add(lblNewLabel_3);
 		
-		lblNewLabel_4 = new JLabel("");
-		panel3.add(lblNewLabel_4);
+		btnNewButton_2 = new JButton("Imprimir");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			//Impresion
+			public void actionPerformed(ActionEvent arg0) {
+				MyTableModel myModel = new MyTableModel(l_movimientos);
+				JTable jTable = new JTable(myModel);
+				jTable.setEnabled(false);
+				jTable.setBounds(10, 11, 1115, 531);
+				jTable.setFont(new Font("Arial", Font.PLAIN, 12));
+				jTable.setRowHeight(24);
+
+				TableColumnModel columnModel = jTable.getColumnModel();
+				columnModel.getColumn(0).setWidth(150);
+				columnModel.getColumn(1).setWidth(300);
+				columnModel.getColumn(2).setWidth(70);
+				columnModel.getColumn(3).setWidth(400);
+				JTableHeader header = jTable.getTableHeader();
+				header.setSize(header.getPreferredSize());
+				header.setBackground(Color.cyan);
+				
+				try {
+					//String strDate = MessageFormat.format("{0,date,medium}", new Date());
+					MessageFormat footerFormat = new MessageFormat("- {0} -");
+					MessageFormat headerFormat = new MessageFormat(
+							"Movimientos cuenta: " + cuenta.getIBAN());
+					jTable.print(JTable.PrintMode.FIT_WIDTH, headerFormat, footerFormat);
+				} catch (PrinterException pe) {
+					System.err.println("Error printing: " + pe.getMessage());
+				}
+			}
+		});
+		btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel3.add(btnNewButton_2);
+		
+		label_5 = new JLabel("");
+		panel3.add(label_5);
 		
 		JButton btnNewButton = new JButton("Cerrar sesion");
 		panel3.add(btnNewButton);
@@ -230,10 +281,37 @@ public class AppBanco extends JFrame implements ActionListener {
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_2);
 		
-		lblTexto = new JLabel("Ultimos movimientos");
+		lblTexto = new JLabel("Ultimos movimientos - ");
 		lblTexto.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblTexto.setText("Ultimos movimientos");
+		lblTexto.setText("Ultimos movimientos - ");
 		panel_2.add(lblTexto);
+		
+		lblNewLabel_4 = new JLabel("Orden:");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel_2.add(lblNewLabel_4);
+		
+		btnImporte = new JButton("Importe");
+		btnImporte.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ordenarImporte();
+			}
+		});
+		btnImporte.setFont(new Font("Tahoma", Font.BOLD, 12));
+		panel_2.add(btnImporte);
+		
+		btnFecha = new JButton("Fecha");
+		btnFecha.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnFecha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnImporte.setEnabled(true);
+				btnFecha.setEnabled(false);
+
+				cuenta = new Cuenta();
+				cambioCuenta();
+			}
+		});
+		btnFecha.setEnabled(false);
+		panel_2.add(btnFecha);
 		
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panel_3.getLayout();
@@ -506,7 +584,7 @@ public class AppBanco extends JFrame implements ActionListener {
 			this.cuenta = cuen;
 			float saldo = cargarMovimientos();
 			textSaldo.setText(saldo+"");
-			lblTexto.setText("Ultimos movimientos");
+			lblTexto.setText("Ultimos movimientos - ");
 			this.num_paginas = this.l_movimientos.size() / MOV_PAGINA;
 			if ((this.l_movimientos.size() % MOV_PAGINA) > 0) {
 				this.num_paginas++;
@@ -533,13 +611,101 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 
+	private void ordenarImporte() {
+		btnImporte.setEnabled(false);
+		btnFecha.setEnabled(true);
+
+		Cuenta cuen = (Cuenta) comboBox.getSelectedItem();
+
+		this.cuenta = cuen;
+		float saldo = cargarMovimientos();
+		
+		int i = 0;
+		Operacion[] a_movims = new Operacion[this.l_movimientos.size()];
+		for (Operacion op : this.l_movimientos) {
+			a_movims[i] = op;
+			i++;
+		}
+		
+		if (this.l_movimientos.size() == 0)
+			return;
+		
+		quickSort(a_movims, 0, a_movims.length - 1);
+
+		this.l_movimientos = new ArrayList<Operacion>();
+		for (i = 0; i < a_movims.length;i++) {
+			this.l_movimientos.add(a_movims[i]);
+		}
+
+		textSaldo.setText(saldo + "");
+		lblTexto.setText("");
+		this.num_paginas = this.l_movimientos.size() / MOV_PAGINA;
+		if ((this.l_movimientos.size() % MOV_PAGINA) > 0) {
+			this.num_paginas++;
+		}
+		this.pag_actual = 1;
+		lblPagina.setText("Pagina: " + this.pag_actual + " / " + this.num_paginas);
+
+		limpiarPanelCentral();
+		presentarPagina();
+
+		if (this.pag_actual >= this.num_paginas) {
+			btnAdelante.setEnabled(false);
+		} else {
+			btnAdelante.setEnabled(true);
+		}
+		if (this.pag_actual <= 1) {
+			btnAtras.setEnabled(false);
+		} else {
+			btnAtras.setEnabled(true);
+		}
+
+		// Registro en el log la consulta de la cuenta
+		LOGGER.log(Level.INFO, "El usuario " + this.usuario.getDni() + " consulta la cuenta " + cuenta.getIBAN());
+
+	}
+
+	public void quickSort(Operacion a[], int start, int end) {
+		if (start >= end) {
+			return;
+		}
+		
+		int medio = start + (end - start) / 2;
+		float pivote = a[medio].getImporte();
+		
+		int i = start;
+		int j = end;
+		
+		while (i <= j) {
+			while (a[i].getImporte() < pivote) {
+				i++;
+			}
+			while (a[j].getImporte() > pivote) {
+				j--;
+			}
+			if (i <= j) {
+				Operacion x = a[i];
+				a[i] = a[j];
+				a[j] = x;
+				i++;
+				j--;
+			}
+		}
+		if (start < j) {
+			quickSort(a, start, j);
+		}
+		if (i < end) {
+			quickSort(a, i, end);
+		}
+	}
+
 	private float cargarMovimientos() {
 		float saldo = 0;
 		List<Operacion> l_mov = new ArrayList<Operacion>();
-		for(Entry<Date, Operacion> entry : this.cuenta.getMovimientos().entrySet()) {
-		  Operacion value = entry.getValue();
-		  l_mov.add(value);
-		  saldo += value.getImporte();
+		for(Date dat : this.cuenta.getMovimientos().keySet()) {
+			  Operacion value = this.cuenta.getMovimientos().get(dat);
+			  l_mov.add(value);
+			  saldo += value.getImporte();
 		}
 		
 		this.l_movimientos = new ArrayList<Operacion>();
@@ -591,10 +757,16 @@ public class AppBanco extends JFrame implements ActionListener {
 	
 	private void presentarPagina() {
 		if (this.pag_actual == 1) {
-			lblTexto.setText("Ultimos movimientos");
+			lblTexto.setText("Ultimos movimientos - ");
+			if (btnFecha.isEnabled()) {
+				lblTexto.setText("Primera página - ");
+			}
 		} else {
 			if (this.pag_actual == this.num_paginas) {
-				lblTexto.setText("Primeros movimientos");
+				lblTexto.setText("Primeros movimientos - ");
+				if(btnFecha.isEnabled()) {
+					lblTexto.setText("Última página - ");
+				}
 			} else {
 				lblTexto.setText("");
 			}
@@ -812,4 +984,107 @@ public class AppBanco extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		System.out.println(e.getActionCommand());
 	}
+	
+	class MyTableModel implements TableModel  {
+
+    	ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
+    	ArrayList<String> columnNames = new ArrayList<String>();
+    	
+		public MyTableModel(List<Operacion> l_movimientos) {
+			super();
+	    	columnNames.add("Fecha");
+	    	columnNames.add("Descripcion");
+	    	columnNames.add("Importe");
+	    	columnNames.add("Operacion");
+	    	
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			DecimalFormat decFormat = new DecimalFormat("################0.00");
+			ArrayList<Object> fila;
+			
+			for (int i = 0;i < l_movimientos.size();i++) {
+				Operacion op = l_movimientos.get(i);
+		    	fila = new ArrayList<Object>();
+		    	fila.add(" "+format.format(op.getFecha()));
+		    	fila.add(op.getConcepto());
+		    	fila.add(op.getImporte());
+		    	
+				String tipo = "";
+				if (op instanceof OperacionCajero) {
+					OperacionCajero opt = (OperacionCajero) op;
+					tipo = "Cajero - "+opt.getEstablecimiento();
+				}
+				if (op instanceof OperacionPagoConTarjeta) {
+					OperacionPagoConTarjeta opt = (OperacionPagoConTarjeta) op;
+					tipo = "Pago Con Tarjeta - "+opt.getBenificiario();
+				}
+				if (op instanceof OperacionTransferencia) {
+					OperacionTransferencia opt = (OperacionTransferencia) op;
+					if (op.getImporte() >= 0) {
+						tipo = "Transferencia de "+opt.getIBANReceptor();
+					} else {
+						tipo = "Transferencia a "+opt.getIBANReceptor();
+					}
+				}
+				if (op instanceof OperacionVentanilla) {
+					OperacionVentanilla opt = (OperacionVentanilla) op;
+					tipo = "Ventanilla - "+opt.getSucursal();
+				}
+
+		    	fila.add(tipo);
+		    	data.add(fila);
+			}
+		}
+
+		@Override
+		public Class<?> getColumnClass(int arg0) {
+			if (arg0 == 2) return Double.class;
+			else return String.class;
+		}
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.size();
+		}
+
+		@Override
+		public String getColumnName(int columnIndex) {
+			return columnNames.get(columnIndex);
+		}
+
+		@Override
+		public int getRowCount() {
+			return data.size();
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return data.get(rowIndex).get(columnIndex);
+		}
+
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return true;
+		}
+
+		@Override
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			ArrayList<Object> d = data.get(rowIndex);
+			d.set(columnIndex, aValue);
+			data.set(rowIndex, d);
+		}
+
+		@Override
+		public void addTableModelListener(TableModelListener l) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void removeTableModelListener(TableModelListener l) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
 }

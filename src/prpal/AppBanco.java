@@ -178,7 +178,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		
 		btnNewButton_2 = new JButton("Imprimir");
 		btnNewButton_2.addActionListener(new ActionListener() {
-			//Impresion
+			//Lógica del botón el método de impresión
 			public void actionPerformed(ActionEvent arg0) {
 				MyTableModel myModel = new MyTableModel(l_movimientos);
 				JTable jTable = new JTable(myModel);
@@ -218,7 +218,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				volverLogin();
+				volverLogin(); //Llamada la función para volver al login
 			}
 		});
 		
@@ -244,7 +244,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		panel.add(comboBox);
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cambioCuenta();
+				cambioCuenta(); //Llamada al método de cambio de cuenta
 			}
 		});
 		comboBox.setMaximumRowCount(15);
@@ -375,6 +375,7 @@ public class AppBanco extends JFrame implements ActionListener {
 
 	}
 	
+	//Metodo de carga del panel central de la ventana (donde se ven los movimientos)
 	private void iniciarPanelCentral() {
 		panel_Centro = new JPanel();
 		panel_Centro.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -548,6 +549,7 @@ public class AppBanco extends JFrame implements ActionListener {
 				
 	}
 	
+	//Metodo para la limpieza del panel central (donde se ven los movimientos)
 	private void limpiarPanelCentral() {
 		lbl01_1_Fecha.setText("");
 		lbl01_1_Descripcion.setText("");
@@ -576,6 +578,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		
 	}
 	
+	//Metodo para el cambio de cuenta
 	private void cambioCuenta() {
 		Cuenta cuen = (Cuenta) comboBox.getSelectedItem();
 		
@@ -611,6 +614,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 
+	//Metodo para ordenar los movimientos por importe
 	private void ordenarImporte() {
 		btnImporte.setEnabled(false);
 		btnFecha.setEnabled(true);
@@ -665,6 +669,7 @@ public class AppBanco extends JFrame implements ActionListener {
 
 	}
 
+	//Metodo para ordenar los movimientos por importe
 	public void quickSort(Operacion a[], int start, int end) {
 		if (start >= end) {
 			return;
@@ -699,6 +704,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 
+	//Metodo para la carga de movimientos
 	private float cargarMovimientos() {
 		float saldo = 0;
 		List<Operacion> l_mov = new ArrayList<Operacion>();
@@ -717,6 +723,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		return saldo;
 	}
 	
+	//avanzar en los movimientos que aparecen en pantalla
 	private void paginarMas() {
 		if (this.pag_actual < this.num_paginas) {
 			this.pag_actual++;
@@ -736,6 +743,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		lblPagina.setText("Pagina: "+this.pag_actual+" / "+this.num_paginas);
 	}
 	
+	//retroceder en los movimientos que aparecen en pantalla
 	private void paginarMenos() {
 		if (this.pag_actual > 1) {
 			this.pag_actual--;
@@ -949,6 +957,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		}
 	}
 	
+	//Metodo para volver a la pantalla de login
 	private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();
@@ -964,6 +973,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		frame.setVisible(true);
 	}
 	
+	//Metodo para la realizacion de transferencias
 	private void realizarTransferencia() {
 		this.setVisible(false);
 		AltaTransferencia frame = new AltaTransferencia(this.usuario, this.cuenta);
@@ -985,6 +995,7 @@ public class AppBanco extends JFrame implements ActionListener {
 		System.out.println(e.getActionCommand());
 	}
 	
+	//Implementacion del TableModel para imprimirlo en el PDF
 	class MyTableModel implements TableModel  {
 
     	ArrayList<ArrayList<Object>> data = new ArrayList<ArrayList<Object>>();
@@ -1035,6 +1046,7 @@ public class AppBanco extends JFrame implements ActionListener {
 			}
 		}
 
+		//Overrides de los métodos de la interfaz del tableModel
 		@Override
 		public Class<?> getColumnClass(int arg0) {
 			if (arg0 == 2) return Double.class;

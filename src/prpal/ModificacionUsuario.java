@@ -277,6 +277,7 @@ public class ModificacionUsuario extends JFrame implements ActionListener {
 		contentPane.add(panel2, BorderLayout.SOUTH);
 		panel2.setLayout(new GridLayout(1, 4, 0, 0));
 		
+		//Boton de volver al menú inicial
 		JButton btnVolver = new JButton("Volver");
 		btnVolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -317,6 +318,8 @@ public class ModificacionUsuario extends JFrame implements ActionListener {
 
 	}
 	
+	
+	//Metodo para la validacion de cada uno de los campos
     public boolean validar() {
     	textNombre.setText(textNombre.getText().trim());
     	String nombre = textNombre.getText();
@@ -516,6 +519,7 @@ public class ModificacionUsuario extends JFrame implements ActionListener {
     	
     }
 
+    //Método para modificar un usuario
     public boolean modificarUsuario() {
 		// Se modifica el usuario
     	UsuarioBD us = new UsuarioBD();
@@ -665,6 +669,7 @@ public class ModificacionUsuario extends JFrame implements ActionListener {
     	}
     }
 
+    //Función para volver al menu de login
     private void volverLogin() {
 		this.setVisible(false);
 		Login frame = new Login();

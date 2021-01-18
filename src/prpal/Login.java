@@ -146,12 +146,14 @@ public class Login extends JFrame implements ActionListener {
 		app.crearBDSqlite();
 	}
 	
+	//Llamada a la ventana del alta de usuario
     private void altaUsuario() {
     	this.setVisible(false);
     	
     	AltaUsuario m = new AltaUsuario();
     }
     
+    //Acceso de la ventana principal de la aplicación
     private void acceder() {
         String dni = this.textField.getText().toUpperCase().trim();
         this.textField.setText(dni);
@@ -233,6 +235,7 @@ public class Login extends JFrame implements ActionListener {
 
     }
 
+    //Metodo para la carga de las cuentas de usuario
     private Usuario cargarCuentasUsuario(Usuario user) {
     	Usuario usuar = user;
     	
@@ -242,6 +245,7 @@ public class Login extends JFrame implements ActionListener {
     	return usuar;
     }
     
+    //Metodo que llama a la modificacion del usuario
     private void modificarUsuario() {
         String dni = this.textField.getText().toUpperCase().trim();
         this.textField.setText(dni);
@@ -347,6 +351,7 @@ public class Login extends JFrame implements ActionListener {
 		
 	}
 
+	//Carga del look and feel
     public static void cargarLookAndFeel(String nombreTema) {
         // if we are running with JDK1.4 decorates the frames and dialogs
         if (OS.isOneDotFourOrMore()) {
